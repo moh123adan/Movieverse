@@ -165,14 +165,13 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                if (movie.releaseDate != null)
-                  Text(
-                    '(${movie.releaseDate!.substring(0, 4)})',
-                    style: TextStyle(
-                      color: Colors.grey[400],
-                      fontSize: 12,
-                    ),
+                Text(
+                  '(${movie.releaseDate.substring(0, 4)})',
+                  style: TextStyle(
+                    color: Colors.grey[400],
+                    fontSize: 12,
                   ),
+                ),
               ],
             ),
           ),

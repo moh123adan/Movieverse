@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../screens/movies_screen.dart';
 
 class OnboardingScreen extends StatelessWidget {
   const OnboardingScreen({super.key});
@@ -24,7 +25,6 @@ class OnboardingScreen extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                // Circular container with gradient border
                 Container(
                   width: 280,
                   height: 280,
@@ -53,7 +53,6 @@ class OnboardingScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 40),
-                // Title Text
                 const Text(
                   'Watch movies in\nVirtual Reality',
                   textAlign: TextAlign.center,
@@ -64,7 +63,6 @@ class OnboardingScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 16),
-                // Subtitle Text
                 Text(
                   'Download and watch offline\nwherever you are',
                   textAlign: TextAlign.center,
@@ -75,7 +73,6 @@ class OnboardingScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 40),
-                // Continue Button with gradient
                 Container(
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
@@ -87,7 +84,13 @@ class OnboardingScreen extends StatelessWidget {
                     borderRadius: BorderRadius.circular(30),
                   ),
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(
+                          builder: (context) => const MoviesScreen(),
+                        ),
+                      );
+                    },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.transparent,
                       shadowColor: Colors.transparent,
@@ -109,7 +112,6 @@ class OnboardingScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 40),
-                // Pagination Dots
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [

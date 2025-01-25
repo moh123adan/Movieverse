@@ -56,10 +56,10 @@ class _MoviesScreenState extends State<MoviesScreen> {
       _selectedIndex = index;
     });
 
-    print('Tapped index: $index'); // Debug print
+    // print('Tapped index: $index'); // Debug print
 
     if (index == 1) {
-      print('Attempting to navigate to DiscoverScreen'); // Debug print
+      // print('Attempting to navigate to DiscoverScreen'); // Debug print
       Navigator.of(context).push(
         MaterialPageRoute(builder: (context) => const DiscoverScreen()),
       );
@@ -68,7 +68,7 @@ class _MoviesScreenState extends State<MoviesScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print('Building MoviesScreen'); // Debug print
+    // print('Building MoviesScreen'); // Debug print
     return Scaffold(
       body: SafeArea(
         child: RefreshIndicator(
@@ -220,7 +220,7 @@ class _MoviesScreenState extends State<MoviesScreen> {
               fontSize: 14,
             ),
           ),
-          if (movie.voteAverage != null) _buildRating(movie.voteAverage),
+          _buildRating(movie.voteAverage),
         ],
       ),
     );

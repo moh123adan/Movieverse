@@ -16,7 +16,7 @@ class ProfileScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        title: const Text('Settings'),
+        title: const Text('Profile'),
       ),
       body: Obx(() {
         final user = authController.userModel.value;
@@ -57,7 +57,7 @@ class ProfileScreen extends StatelessWidget {
               const SizedBox(height: 32),
               _buildTextField('Name', user.name ?? ''),
               const SizedBox(height: 16),
-              _buildTextField('@${user.username ?? ''}', user.username ?? ''),
+              _buildTextField('Username', user.username ?? ''),
               const SizedBox(height: 16),
               _buildTextField('Bio', user.bio ?? ''),
               const SizedBox(height: 24),
@@ -76,6 +76,27 @@ class ProfileScreen extends StatelessWidget {
                   const SizedBox(width: 16),
                   _buildGenderButton('Female', user.gender == 'Female'),
                 ],
+              ),
+              const SizedBox(height: 24),
+              ElevatedButton(
+                onPressed: () {
+                  profileController.updateProfile(
+                    name: _nameController.text,
+                    username: _usernameController.text,
+                    bio: _bioController.text,
+                  );
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.orange,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 50,
+                    vertical: 16,
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                ),
+                child: const Text('Update Profile'),
               ),
             ],
           ),
@@ -102,6 +123,10 @@ class ProfileScreen extends StatelessWidget {
       ),
     );
   }
+
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _bioController = TextEditingController();
 
   Widget _buildTextField(String hint, String initialValue) {
     return TextField(

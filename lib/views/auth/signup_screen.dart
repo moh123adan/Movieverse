@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+// import 'package:cupertino_icons/cupertino_icons.dart'; // Import cupertino_icons
 import '../../controllers/auth_controller.dart';
 
 class SignupScreen extends StatelessWidget {
@@ -106,6 +108,10 @@ class SignupScreen extends StatelessWidget {
                     borderRadius: BorderRadius.circular(12),
                     borderSide: BorderSide.none,
                   ),
+                  prefixIcon: Icon(
+                    CupertinoIcons.person,
+                    color: Colors.grey[600],
+                  ),
                 ),
               ),
               const SizedBox(height: 16),
@@ -121,6 +127,10 @@ class SignupScreen extends StatelessWidget {
                     borderRadius: BorderRadius.circular(12),
                     borderSide: BorderSide.none,
                   ),
+                  prefixIcon: Icon(
+                    CupertinoIcons.at,
+                    color: Colors.grey[600],
+                  ),
                 ),
               ),
               const SizedBox(height: 16),
@@ -135,6 +145,10 @@ class SignupScreen extends StatelessWidget {
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
                     borderSide: BorderSide.none,
+                  ),
+                  prefixIcon: Icon(
+                    CupertinoIcons.mail,
+                    color: Colors.grey[600],
                   ),
                 ),
               ),
@@ -152,19 +166,44 @@ class SignupScreen extends StatelessWidget {
                     borderRadius: BorderRadius.circular(12),
                     borderSide: BorderSide.none,
                   ),
+                  prefixIcon: Icon(
+                    CupertinoIcons.lock,
+                    color: Colors.grey[600],
+                  ),
                 ),
               ),
               const SizedBox(height: 24),
-              ElevatedButton(
-                onPressed: _signUp,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.orange,
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
+              Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      Colors.pink.shade400,
+                      Colors.teal.shade400,
+                    ],
+                  ),
+                  borderRadius: BorderRadius.circular(30),
+                ),
+                child: ElevatedButton(
+                  onPressed: _signUp,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.transparent,
+                    shadowColor: Colors.transparent,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 50,
+                      vertical: 16,
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                  ),
+                  child: const Text(
+                    'Sign Up',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 ),
-                child: const Text('Sign Up'),
               ),
               const SizedBox(height: 16),
               TextButton(

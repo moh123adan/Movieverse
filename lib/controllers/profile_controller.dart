@@ -1,22 +1,22 @@
 import 'dart:io';
 import 'package:get/get.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_firestore/cloud_firestore.dart'; // Import Firestore
 import 'package:image_picker/image_picker.dart';
-// import '../models/user.dart';
 import 'auth_controller.dart';
 
 class ProfileController extends GetxController {
   final FirebaseStorage _storage = FirebaseStorage.instance;
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  
+  final FirebaseFirestore _firestore =
+      FirebaseFirestore.instance; // Initialize Firestore
+
   Rx<File?> pickedImage = Rx<File?>(null);
   final RxString gender = ''.obs;
 
   Future<void> pickImage() async {
     final ImagePicker picker = ImagePicker();
     final XFile? image = await picker.pickImage(source: ImageSource.gallery);
-    
+
     if (image != null) {
       pickedImage.value = File(image.path);
       await uploadImage();

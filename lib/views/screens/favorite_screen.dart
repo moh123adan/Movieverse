@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../providers/favorite_provider.dart';
 import '../../models/movie.dart';
-// import '../screens/movie_detail_screen.dart';
+import '../screens/discover_screen.dart';
+import '../screens/movies_screen.dart';
 
 class FavoriteScreen extends StatefulWidget {
   const FavoriteScreen({super.key});
@@ -14,6 +15,7 @@ class FavoriteScreen extends StatefulWidget {
 class _FavoriteScreenState extends State<FavoriteScreen> {
   String selectedGenre = 'All';
   final List<String> genres = ['All', 'Action', 'Adventure', 'Horror'];
+  int _selectedIndex = 2; // Assuming Favorites is the third tab
 
   @override
   void initState() {
@@ -22,6 +24,33 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
       // ignore: use_build_context_synchronously
       () => context.read<FavoriteProvider>().loadFavorites(),
     );
+  }
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+
+    switch (index) {
+      case 0:
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const MoviesScreen()),
+        );
+        break;
+      case 1:
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const DiscoverScreen()),
+        );
+        break;
+      case 2:
+        // Already on FavoriteScreen, no action needed
+        break;
+      case 3:
+        // TODO: Implement profile screen navigation
+        break;
+    }
   }
 
   @override
@@ -109,6 +138,21 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
             ],
           ),
         ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
+        backgroundColor: Colors.black,
+        type: BottomNavigationBarType.fixed,
+        selectedItemColor: Colors.orange,
+        unselectedItemColor: Colors.grey,
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+          BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Discover'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.favorite), label: 'Favorites'),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
+        ],
       ),
     );
   }

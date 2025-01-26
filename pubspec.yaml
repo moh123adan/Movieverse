@@ -35,6 +35,11 @@ dependencies:
   flutter_dotenv: ^5.0.2
   url_launcher: ^6.1.14
   provider: ^6.0.3
+  firebase_core: ^2.15.1
+  firebase_auth: ^4.7.3
+  cloud_firestore: ^4.8.5
+  firebase_storage: ^11.2.6
+  image_picker: ^1.0.4
   # youtube_player_flutter: ^8.1.2
   # google_fonts: ^3.0.1
   # cached_network_image: ^3.2.0

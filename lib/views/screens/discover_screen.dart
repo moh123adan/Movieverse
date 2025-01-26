@@ -4,6 +4,7 @@ import '../../services/movie_service.dart';
 import './movie_detail_screen.dart';
 import './movies_screen.dart';
 import './favorite_screen.dart';
+import 'profile_screen.dart';
 
 class DiscoverScreen extends StatefulWidget {
   const DiscoverScreen({super.key});
@@ -80,10 +81,16 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
           MaterialPageRoute(builder: (context) => const MoviesScreen()),
         );
         break;
-      case 2:
+      case 1:
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => const FavoriteScreen()),
+        );
+        break;
+      case 2:
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => ProfileScreen()),
         );
         break;
     }

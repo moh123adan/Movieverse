@@ -4,7 +4,7 @@ import '../../controllers/auth_controller.dart';
 import '../../controllers/profile_controller.dart';
 
 class ProfileScreen extends StatelessWidget {
-  ProfileScreen({super.key});
+   ProfileScreen({super.key});
 
   final ProfileController profileController = Get.put(ProfileController());
   final AuthController authController = Get.find<AuthController>();

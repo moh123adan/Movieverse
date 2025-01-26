@@ -46,12 +46,9 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
         );
         break;
       case 2:
-        // Already on FavoriteScreen, no action needed
-        break;
-      case 3:
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) =>  ProfileScreen()),
+          MaterialPageRoute(builder: (context) => ProfileScreen()),
         );
         break;
     }

@@ -4,6 +4,7 @@ import '../../providers/favorite_provider.dart';
 import '../../models/movie.dart';
 import '../screens/discover_screen.dart';
 import '../screens/movies_screen.dart';
+import '../screens/profile_screen.dart'; // Import ProfileScreen
 
 class FavoriteScreen extends StatefulWidget {
   const FavoriteScreen({super.key});
@@ -48,6 +49,10 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
         // Already on FavoriteScreen, no action needed
         break;
       case 3:
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) =>  ProfileScreen()),
+        );
         break;
     }
   }

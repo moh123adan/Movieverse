@@ -48,7 +48,6 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
         // Already on FavoriteScreen, no action needed
         break;
       case 3:
-        // TODO: Implement profile screen navigation
         break;
     }
   }

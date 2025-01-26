@@ -4,7 +4,7 @@ class UserModel {
   final String? username;
   final String? email;
   final String? bio;
-  final String? photoUrl;
+  late final String? photoUrl;
   final String? gender;
 
   UserModel({

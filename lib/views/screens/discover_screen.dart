@@ -6,7 +6,7 @@ import './movies_screen.dart';
 import './favorite_screen.dart';
 
 class DiscoverScreen extends StatefulWidget {
-  const DiscoverScreen({Key? key}) : super(key: key);
+  const DiscoverScreen({super.key});
 
   @override
   State<DiscoverScreen> createState() => _DiscoverScreenState();

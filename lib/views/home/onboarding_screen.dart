@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../screens/movies_screen.dart';
+import '../auth/signup_screen.dart'; // Import the SignupScreen
 
 class OnboardingScreen extends StatelessWidget {
   const OnboardingScreen({super.key});
@@ -85,9 +85,10 @@ class OnboardingScreen extends StatelessWidget {
                   ),
                   child: ElevatedButton(
                     onPressed: () {
+                      // Navigate to the SignupScreen
                       Navigator.of(context).pushReplacement(
                         MaterialPageRoute(
-                          builder: (context) => const MoviesScreen(),
+                          builder: (context) => SignupScreen(),
                         ),
                       );
                     },

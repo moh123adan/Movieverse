@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+// import 'package:cupertino_icons/cupertino_icons.dart'; // Import cupertino_icons
 import '../../controllers/auth_controller.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -13,7 +15,7 @@ class LoginScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.black,
       body: SafeArea(
-        child: Padding(
+        child: SingleChildScrollView(
           padding: const EdgeInsets.all(32.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -41,6 +43,10 @@ class LoginScreen extends StatelessWidget {
                     borderRadius: BorderRadius.circular(12),
                     borderSide: BorderSide.none,
                   ),
+                  prefixIcon: Icon(
+                    CupertinoIcons.mail,
+                    color: Colors.grey[600],
+                  ),
                 ),
               ),
               const SizedBox(height: 16),
@@ -57,24 +63,49 @@ class LoginScreen extends StatelessWidget {
                     borderRadius: BorderRadius.circular(12),
                     borderSide: BorderSide.none,
                   ),
+                  prefixIcon: Icon(
+                    CupertinoIcons.lock,
+                    color: Colors.grey[600],
+                  ),
                 ),
               ),
               const SizedBox(height: 24),
-              ElevatedButton(
-                onPressed: () {
-                  Get.find<AuthController>().signIn(
-                    email: _emailController.text,
-                    password: _passwordController.text,
-                  );
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.orange,
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
+              Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      Colors.pink.shade400,
+                      Colors.teal.shade400,
+                    ],
+                  ),
+                  borderRadius: BorderRadius.circular(30),
+                ),
+                child: ElevatedButton(
+                  onPressed: () {
+                    Get.find<AuthController>().signIn(
+                      email: _emailController.text,
+                      password: _passwordController.text,
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.transparent,
+                    shadowColor: Colors.transparent,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 50,
+                      vertical: 16,
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                  ),
+                  child: const Text(
+                    'Sign In',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 ),
-                child: const Text('Sign In'),
               ),
               const SizedBox(height: 16),
               TextButton(

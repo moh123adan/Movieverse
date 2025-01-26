@@ -83,6 +83,9 @@ class AuthController extends GetxController {
           .collection('users')
           .doc(cred.user!.uid)
           .set(user.toJson());
+
+      // Navigate to MoviesScreen after successful sign-up
+      Get.offAllNamed('/home');
     } on FirebaseAuthException catch (e) {
       String errorMessage = 'An error occurred. Please try again.';
       if (e.code == 'weak-password') {
@@ -102,6 +105,7 @@ class AuthController extends GetxController {
   }) async {
     try {
       await _auth.signInWithEmailAndPassword(email: email, password: password);
+      // Navigation is handled in _setInitialScreen
     } on FirebaseAuthException catch (e) {
       String errorMessage = 'An error occurred. Please try again.';
       if (e.code == 'user-not-found' || e.code == 'wrong-password') {

@@ -11,6 +11,8 @@ import 'package:movieverse/views/auth/signup_screen.dart';
 import 'package:movieverse/views/screens/profile_screen.dart';
 import 'package:movieverse/views/home/onboarding_screen.dart';
 
+import 'views/screens/movies_screen.dart';
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -52,6 +54,9 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/login', page: () => LoginScreen()),
         GetPage(name: '/signup', page: () => SignupScreen()),
         GetPage(name: '/profile', page: () => ProfileScreen()),
+        GetPage(
+            name: '/home',
+            page: () => MoviesScreen()), // Ensure this route exists
       ],
     );
   }

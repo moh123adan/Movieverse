@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
-import '../auth/signup_screen.dart'; // Import the SignupScreen
+import 'package:get/get.dart';
+import '../auth/signup_screen.dart';
+import '../screens/movies_screen.dart';
+import '../../controllers/auth_controller.dart';
 
 class OnboardingScreen extends StatelessWidget {
   const OnboardingScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final AuthController authController = Get.find<AuthController>();
+
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
@@ -85,12 +90,11 @@ class OnboardingScreen extends StatelessWidget {
                   ),
                   child: ElevatedButton(
                     onPressed: () {
-                      // Navigate to the SignupScreen
-                      Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(
-                          builder: (context) => SignupScreen(),
-                        ),
-                      );
+                      if (authController.isLoggedIn.value) {
+                        Get.off(() => const MoviesScreen());
+                      } else {
+                        Get.off(() => SignupScreen());
+                      }
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.transparent,

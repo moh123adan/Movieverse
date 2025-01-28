@@ -1,13 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-// import 'package:cupertino_icons/cupertino_icons.dart'; // Import cupertino_icons
 import '../../controllers/auth_controller.dart';
 
 class SignupScreen extends StatelessWidget {
   SignupScreen({super.key});
 
-  final TextEditingController _nameController = TextEditingController();
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -15,64 +13,56 @@ class SignupScreen extends StatelessWidget {
   void _signUp() {
     final String email = _emailController.text.trim();
     final String password = _passwordController.text.trim();
-    final String name = _nameController.text.trim();
     final String username = _usernameController.text.trim();
 
-    // Validate email
     if (!GetUtils.isEmail(email)) {
-      Get.snackbar(
-        'Error',
-        'Please enter a valid email address',
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.red,
-        colorText: Colors.white,
-      );
+      Get.snackbar('Error', 'Please enter a valid email address',
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.red,
+          colorText: Colors.white);
       return;
     }
 
-    // Validate password
     if (password.length < 6) {
-      Get.snackbar(
-        'Error',
-        'Password must be at least 6 characters long',
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.red,
-        colorText: Colors.white,
-      );
+      Get.snackbar('Error', 'Password must be at least 6 characters long',
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.red,
+          colorText: Colors.white);
       return;
     }
 
-    // Validate name
-    if (name.isEmpty) {
-      Get.snackbar(
-        'Error',
-        'Please enter your name',
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.red,
-        colorText: Colors.white,
-      );
-      return;
-    }
-
-    // Validate username
     if (username.isEmpty) {
-      Get.snackbar(
-        'Error',
-        'Please enter a username',
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.red,
-        colorText: Colors.white,
-      );
+      Get.snackbar('Error', 'Please enter a username',
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.red,
+          colorText: Colors.white);
       return;
     }
 
-    // Call the AuthController to sign up
-    Get.find<AuthController>().signUp(
+    // Show loading indicator
+    Get.dialog(
+      const Center(child: CircularProgressIndicator()),
+      barrierDismissible: false,
+    );
+
+    Get.find<AuthController>()
+        .signUp(
       email: email,
       password: password,
-      name: name,
       username: username,
-    );
+    )
+        .then((_) {
+      // Close loading indicator
+      Get.back();
+    }).catchError((error) {
+      // Close loading indicator
+      Get.back();
+      // Show error message
+      Get.snackbar('Error', error.toString(),
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.red,
+          colorText: Colors.white);
+    });
   }
 
   @override
@@ -97,25 +87,6 @@ class SignupScreen extends StatelessWidget {
               ),
               const SizedBox(height: 48),
               TextField(
-                controller: _nameController,
-                style: const TextStyle(color: Colors.white),
-                decoration: InputDecoration(
-                  hintText: 'Name',
-                  hintStyle: TextStyle(color: Colors.grey[600]),
-                  filled: true,
-                  fillColor: Colors.grey[900],
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    borderSide: BorderSide.none,
-                  ),
-                  prefixIcon: Icon(
-                    CupertinoIcons.person,
-                    color: Colors.grey[600],
-                  ),
-                ),
-              ),
-              const SizedBox(height: 16),
-              TextField(
                 controller: _usernameController,
                 style: const TextStyle(color: Colors.white),
                 decoration: InputDecoration(
@@ -127,10 +98,7 @@ class SignupScreen extends StatelessWidget {
                     borderRadius: BorderRadius.circular(12),
                     borderSide: BorderSide.none,
                   ),
-                  prefixIcon: Icon(
-                    CupertinoIcons.at,
-                    color: Colors.grey[600],
-                  ),
+                  prefixIcon: Icon(CupertinoIcons.at, color: Colors.grey[600]),
                 ),
               ),
               const SizedBox(height: 16),
@@ -146,10 +114,8 @@ class SignupScreen extends StatelessWidget {
                     borderRadius: BorderRadius.circular(12),
                     borderSide: BorderSide.none,
                   ),
-                  prefixIcon: Icon(
-                    CupertinoIcons.mail,
-                    color: Colors.grey[600],
-                  ),
+                  prefixIcon:
+                      Icon(CupertinoIcons.mail, color: Colors.grey[600]),
                 ),
               ),
               const SizedBox(height: 16),
@@ -166,20 +132,15 @@ class SignupScreen extends StatelessWidget {
                     borderRadius: BorderRadius.circular(12),
                     borderSide: BorderSide.none,
                   ),
-                  prefixIcon: Icon(
-                    CupertinoIcons.lock,
-                    color: Colors.grey[600],
-                  ),
+                  prefixIcon:
+                      Icon(CupertinoIcons.lock, color: Colors.grey[600]),
                 ),
               ),
               const SizedBox(height: 24),
               Container(
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
-                    colors: [
-                      Colors.pink.shade400,
-                      Colors.teal.shade400,
-                    ],
+                    colors: [Colors.pink.shade400, Colors.teal.shade400],
                   ),
                   borderRadius: BorderRadius.circular(30),
                 ),
@@ -189,19 +150,14 @@ class SignupScreen extends StatelessWidget {
                     backgroundColor: Colors.transparent,
                     shadowColor: Colors.transparent,
                     padding: const EdgeInsets.symmetric(
-                      horizontal: 50,
-                      vertical: 16,
-                    ),
+                        horizontal: 50, vertical: 16),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30),
                     ),
                   ),
                   child: const Text(
                     'Sign Up',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                    ),
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                   ),
                 ),
               ),

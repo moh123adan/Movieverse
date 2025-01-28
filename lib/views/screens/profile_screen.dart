@@ -4,10 +4,14 @@ import '../../controllers/auth_controller.dart';
 import '../../controllers/profile_controller.dart';
 
 class ProfileScreen extends StatelessWidget {
-   ProfileScreen({super.key});
+  ProfileScreen({super.key});
 
   final ProfileController profileController = Get.put(ProfileController());
   final AuthController authController = Get.find<AuthController>();
+
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _bioController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -17,12 +21,23 @@ class ProfileScreen extends StatelessWidget {
         backgroundColor: Colors.transparent,
         elevation: 0,
         title: const Text('Profile'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.logout),
+            onPressed: () => _showLogoutDialog(context),
+          ),
+        ],
       ),
       body: Obx(() {
         final user = authController.userModel.value;
         if (user == null) {
           return const Center(child: CircularProgressIndicator());
         }
+
+        // Update text controllers with user data
+        _nameController.text = user.name ?? '';
+        _usernameController.text = user.username ?? '';
+        _bioController.text = user.bio ?? '';
 
         return SingleChildScrollView(
           padding: const EdgeInsets.all(16.0),
@@ -55,11 +70,11 @@ class ProfileScreen extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 32),
-              _buildTextField('Name', user.name ?? ''),
+              _buildTextField('Name', _nameController),
               const SizedBox(height: 16),
-              _buildTextField('Username', user.username ?? ''),
+              _buildTextField('Username', _usernameController),
               const SizedBox(height: 16),
-              _buildTextField('Bio', user.bio ?? ''),
+              _buildTextField('Bio', _bioController),
               const SizedBox(height: 24),
               const Text(
                 'Gender',
@@ -81,7 +96,6 @@ class ProfileScreen extends StatelessWidget {
               ElevatedButton(
                 onPressed: () {
                   profileController.updateProfile(
-                    name: _nameController.text,
                     username: _usernameController.text,
                     bio: _bioController.text,
                   );
@@ -118,18 +132,26 @@ class ProfileScreen extends StatelessWidget {
         onTap: (index) {
           if (index != 3) {
             // Handle navigation to other screens
+            switch (index) {
+              case 0:
+                Get.offAllNamed('/home');
+                break;
+              case 1:
+                Get.toNamed('/play');
+                break;
+              case 2:
+                Get.toNamed('/watchlist');
+                break;
+            }
           }
         },
       ),
     );
   }
 
-  final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _usernameController = TextEditingController();
-  final TextEditingController _bioController = TextEditingController();
-
-  Widget _buildTextField(String hint, String initialValue) {
+  Widget _buildTextField(String hint, TextEditingController controller) {
     return TextField(
+      controller: controller,
       style: const TextStyle(color: Colors.white),
       decoration: InputDecoration(
         hintText: hint,
@@ -141,13 +163,12 @@ class ProfileScreen extends StatelessWidget {
           borderSide: BorderSide.none,
         ),
       ),
-      controller: TextEditingController(text: initialValue),
     );
   }
 
   Widget _buildGenderButton(String gender, bool isSelected) {
     return ElevatedButton(
-      onPressed: () => profileController.gender.value = gender,
+      onPressed: () => profileController.updateGender(gender),
       style: ElevatedButton.styleFrom(
         backgroundColor: isSelected ? Colors.orange : Colors.grey[900],
         shape: RoundedRectangleBorder(
@@ -156,6 +177,33 @@ class ProfileScreen extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
       ),
       child: Text(gender),
+    );
+  }
+
+  void _showLogoutDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Logout'),
+          content: const Text('Are you sure you want to logout?'),
+          actions: [
+            TextButton(
+              child: const Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: const Text('Logout'),
+              onPressed: () {
+                Navigator.of(context).pop();
+                authController.signOut();
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }

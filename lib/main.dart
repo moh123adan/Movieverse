@@ -8,7 +8,7 @@ import 'package:movieverse/providers/favorite_provider.dart';
 import 'package:movieverse/controllers/auth_controller.dart';
 import 'package:movieverse/views/auth/login_screen.dart';
 import 'package:movieverse/views/auth/signup_screen.dart';
-import 'package:movieverse/views/screens/profile_screen.dart';
+// import 'package:movieverse/views/screens/profile_screen.dart';
 import 'package:movieverse/views/home/onboarding_screen.dart';
 
 import 'views/screens/movies_screen.dart';
@@ -53,10 +53,11 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/onboarding', page: () => const OnboardingScreen()),
         GetPage(name: '/login', page: () => LoginScreen()),
         GetPage(name: '/signup', page: () => SignupScreen()),
-        GetPage(name: '/profile', page: () => ProfileScreen()),
+        // GetPage(name: '/profile', page: () => ProfileScreen()),
         GetPage(
-            name: '/home',
+            name: '/',
             page: () => MoviesScreen()), // Ensure this route exists
+            
       ],
     );
   }

@@ -11,7 +11,10 @@ import 'package:movieverse/views/auth/signup_screen.dart';
 // import 'package:movieverse/views/screens/profile_screen.dart';
 import 'package:movieverse/views/home/onboarding_screen.dart';
 
+import 'views/screens/discover_screen.dart';
+import 'views/screens/favorite_screen.dart';
 import 'views/screens/movies_screen.dart';
+import 'views/screens/profile_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -54,10 +57,10 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/login', page: () => LoginScreen()),
         GetPage(name: '/signup', page: () => SignupScreen()),
         // GetPage(name: '/profile', page: () => ProfileScreen()),
-        GetPage(
-            name: '/',
-            page: () => MoviesScreen()), // Ensure this route exists
-            
+        GetPage(name: '/', page: () => const MoviesScreen()),
+        GetPage(name: '/discover', page: () => const DiscoverScreen()),
+        GetPage(name: '/favorites', page: () => const FavoriteScreen()),
+        GetPage(name: '/profile', page: () => ProfileScreen()),
       ],
     );
   }

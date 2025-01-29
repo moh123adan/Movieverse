@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-// import 'package:cupertino_icons/cupertino_icons.dart'; // Import cupertino_icons
 import '../../controllers/auth_controller.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -9,6 +8,27 @@ class LoginScreen extends StatelessWidget {
 
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final AuthController _authController = Get.find<AuthController>();
+
+  Future<void> _handleSignIn() async {
+    try {
+      await _authController.signIn(
+        email: _emailController.text,
+        password: _passwordController.text,
+      );
+      // If sign-in is successful, navigate to MoviesScreen
+      Get.offAllNamed('/movies');
+    } catch (e) {
+      // If sign-in fails, show an error message
+      Get.snackbar(
+        'Error',
+        'Failed to sign in. Please check your credentials.',
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -81,12 +101,7 @@ class LoginScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(30),
                 ),
                 child: ElevatedButton(
-                  onPressed: () {
-                    Get.find<AuthController>().signIn(
-                      email: _emailController.text,
-                      password: _passwordController.text,
-                    );
-                  },
+                  onPressed: _handleSignIn,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.transparent,
                     shadowColor: Colors.transparent,

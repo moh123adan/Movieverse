@@ -83,8 +83,21 @@ class AuthController extends GetxController {
     required String password,
   }) async {
     try {
-      await _auth.signInWithEmailAndPassword(email: email, password: password);
-      // Login state and navigation are handled in _setInitialScreen
+      final UserCredential cred = await _auth.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      if (cred.user != null) {
+        isLoggedIn.value = true;
+        _storage.write('isLoggedIn', true);
+
+        // Load user data
+        await loadUserData(cred.user!.uid);
+
+        // Navigate to home screen (change route as needed)
+        Get.offAllNamed('/');
+      }
     } on FirebaseAuthException catch (e) {
       String errorMessage = 'An error occurred. Please try again.';
       if (e.code == 'user-not-found' || e.code == 'wrong-password') {

@@ -17,28 +17,8 @@ class AuthController extends GetxController {
   void onInit() {
     super.onInit();
     firebaseUser.bindStream(_auth.authStateChanges());
-    ever(firebaseUser, _setInitialScreen);
-
     // Check local storage for login state
     isLoggedIn.value = _storage.read('isLoggedIn') ?? false;
-  }
-
-  void _setInitialScreen(User? user) async {
-    if (user == null) {
-      isLoggedIn.value = false;
-      _storage.write('isLoggedIn', false);
-      Get.offAllNamed('/login');
-    } else {
-      try {
-        await loadUserData(user.uid);
-        isLoggedIn.value = true;
-        _storage.write('isLoggedIn', true);
-        Get.offAllNamed('/');
-      } catch (e) {
-        Get.snackbar('Error', 'Failed to load user data. Please try again.');
-        Get.offAllNamed('/login');
-      }
-    }
   }
 
   Future<void> loadUserData(String uid) async {

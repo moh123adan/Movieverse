@@ -86,9 +86,9 @@ class _MoviesScreenState extends State<MoviesScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _buildHeader(),
-                  const SizedBox(height: 24),
-                  _buildContent(),
+                  // _buildHeader(),
+                  // const SizedBox(height: 24),
+                  // _buildContent(),
                 ],
               ),
             ),

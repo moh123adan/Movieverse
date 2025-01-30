@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import '../../models/movie.dart';
 import '../../services/movie_service.dart';
 import './movie_detail_screen.dart';
@@ -69,29 +70,23 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
     _fetchMovies();
   }
 
-  void _onItemTapped(int index) {
+   void _onItemTapped(int index) {
     setState(() {
       _currentIndex = index;
     });
 
     switch (index) {
       case 0:
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const MoviesScreen()),
-        );
+        Get.offAll(() => const MoviesScreen());
         break;
       case 1:
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const FavoriteScreen()),
-        );
+        // Already on Discover screen
         break;
       case 2:
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => ProfileScreen()),
-        );
+        Get.offAll(() => const FavoriteScreen());
+        break;
+      case 3:
+        Get.offAll(() => ProfileScreen());
         break;
     }
   }
@@ -143,9 +138,9 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
             label: 'Discover',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.bookmark_outline),
-            activeIcon: Icon(Icons.bookmark),
-            label: 'Watchlist',
+            icon: Icon(Icons.favorite_border),
+            activeIcon: Icon(Icons.favorite),
+            label: 'Favorites',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person_outline),
@@ -156,7 +151,6 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
       ),
     );
   }
-
   Widget _buildSearchBar() {
     return TextField(
       controller: _searchController,

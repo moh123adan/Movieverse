@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import 'package:provider/provider.dart';
+import 'package:get/get.dart';
 import '../../models/movie.dart';
 import '../../services/movie_service.dart';
 import '../../providers/favorite_provider.dart';
-import '../screens/favorite_screen.dart';
-import '../screens/movies_screen.dart';
+import './favorite_screen.dart';
+import './movies_screen.dart';
+import './discover_screen.dart';
+import './profile_screen.dart';
 
 class MovieDetailScreen extends StatefulWidget {
   final Movie movie;
@@ -92,16 +95,16 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
     setState(() => _currentIndex = index);
     switch (index) {
       case 0:
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const MoviesScreen()),
-        );
+        Get.offAll(() => const MoviesScreen());
+        break;
+      case 1:
+        Get.offAll(() => const DiscoverScreen());
         break;
       case 2:
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const FavoriteScreen()),
-        );
+        Get.offAll(() => const FavoriteScreen());
+        break;
+      case 3:
+        Get.offAll(() => ProfileScreen());
         break;
     }
   }
@@ -183,14 +186,14 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.play_circle_outline),
-            activeIcon: Icon(Icons.play_circle),
-            label: 'Play',
+            icon: Icon(Icons.search),
+            activeIcon: Icon(Icons.search),
+            label: 'Discover',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.bookmark_outline),
-            activeIcon: Icon(Icons.bookmark),
-            label: 'Watchlist',
+            icon: Icon(Icons.favorite_border),
+            activeIcon: Icon(Icons.favorite),
+            label: 'Favorites',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person_outline),

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import '../../providers/favorite_provider.dart';
 import '../../models/movie.dart';
-import '../screens/discover_screen.dart';
-import '../screens/movies_screen.dart';
-import '../screens/profile_screen.dart'; // Import ProfileScreen
+import './discover_screen.dart';
+import './movies_screen.dart';
+import './profile_screen.dart';
 
 class FavoriteScreen extends StatefulWidget {
   const FavoriteScreen({super.key});
@@ -16,7 +17,7 @@ class FavoriteScreen extends StatefulWidget {
 class _FavoriteScreenState extends State<FavoriteScreen> {
   String selectedGenre = 'All';
   final List<String> genres = ['All', 'Action', 'Adventure', 'Horror'];
-  int _selectedIndex = 2; // Assuming Favorites is the third tab
+  int _currentIndex = 2; // Set to 2 for Favorites tab
 
   @override
   void initState() {
@@ -29,27 +30,21 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
 
   void _onItemTapped(int index) {
     setState(() {
-      _selectedIndex = index;
+      _currentIndex = index;
     });
 
     switch (index) {
       case 0:
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const MoviesScreen()),
-        );
+        Get.offAll(() => const MoviesScreen());
         break;
       case 1:
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const DiscoverScreen()),
-        );
+        Get.offAll(() => const DiscoverScreen());
         break;
       case 2:
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => ProfileScreen()),
-        );
+        // Already on Favorites screen
+        break;
+      case 3:
+        Get.offAll(() => ProfileScreen());
         break;
     }
   }
@@ -141,18 +136,33 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedIndex,
+        currentIndex: _currentIndex,
         onTap: _onItemTapped,
         backgroundColor: Colors.black,
         type: BottomNavigationBarType.fixed,
         selectedItemColor: Colors.orange,
         unselectedItemColor: Colors.grey,
         items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Discover'),
           BottomNavigationBarItem(
-              icon: Icon(Icons.favorite), label: 'Favorites'),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
+            icon: Icon(Icons.home_outlined),
+            activeIcon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.search),
+            activeIcon: Icon(Icons.search),
+            label: 'Discover',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.favorite_border),
+            activeIcon: Icon(Icons.favorite),
+            label: 'Favorites',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person_outline),
+            activeIcon: Icon(Icons.person),
+            label: 'Profile',
+          ),
         ],
       ),
     );

@@ -3,6 +3,9 @@ import 'package:get/get.dart';
 import '../../controllers/auth_controller.dart';
 import '../../models/movie.dart';
 import '../../services/movie_service.dart';
+import './discover_screen.dart';
+import './favorite_screen.dart';
+import './profile_screen.dart';
 
 class MoviesScreen extends StatefulWidget {
   const MoviesScreen({super.key});
@@ -17,7 +20,7 @@ class _MoviesScreenState extends State<MoviesScreen> {
   List<Movie> trendingMovies = [];
   bool isLoading = true;
   String? error;
-  int _selectedIndex = 0;
+  int _currentIndex = 0;
 
   @override
   void initState() {
@@ -55,21 +58,21 @@ class _MoviesScreenState extends State<MoviesScreen> {
 
   void _onItemTapped(int index) {
     setState(() {
-      _selectedIndex = index;
+      _currentIndex = index;
     });
 
     switch (index) {
       case 0:
-        Get.offAllNamed('/'); // Home screen
+        // Already on Home screen
         break;
       case 1:
-        Get.offAllNamed('/discover'); // Navigate to DiscoverScreen
+        Get.offAll(() => const DiscoverScreen());
         break;
       case 2:
-        Get.offAllNamed('/favorites'); // Navigate to FavoriteScreen
+        Get.offAll(() => const FavoriteScreen());
         break;
       case 3:
-        Get.offAllNamed('/profile'); // Navigate to ProfileScreen
+        Get.offAll(() => ProfileScreen());
         break;
     }
   }
@@ -96,7 +99,36 @@ class _MoviesScreenState extends State<MoviesScreen> {
           ),
         ),
       ),
-      bottomNavigationBar: _buildBottomNavigationBar(),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _currentIndex,
+        onTap: _onItemTapped,
+        backgroundColor: Colors.black,
+        type: BottomNavigationBarType.fixed,
+        selectedItemColor: Colors.orange,
+        unselectedItemColor: Colors.grey,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home_outlined),
+            activeIcon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.search),
+            activeIcon: Icon(Icons.search),
+            label: 'Discover',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.favorite_border),
+            activeIcon: Icon(Icons.favorite),
+            label: 'Favorites',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person_outline),
+            activeIcon: Icon(Icons.person),
+            label: 'Profile',
+          ),
+        ],
+      ),
     );
   }
 
@@ -106,7 +138,7 @@ class _MoviesScreenState extends State<MoviesScreen> {
         Text(
           'Stream ',
           style: TextStyle(
-            color: Colors.teal[300],
+            color: Colors.orange,
             fontSize: 24,
             fontWeight: FontWeight.bold,
           ),
@@ -125,7 +157,7 @@ class _MoviesScreenState extends State<MoviesScreen> {
   Widget _buildContent() {
     if (isLoading) {
       return const Center(
-        child: CircularProgressIndicator(color: Colors.teal),
+        child: CircularProgressIndicator(color: Colors.orange),
       );
     } else if (error != null) {
       return _buildErrorWidget();
@@ -188,9 +220,9 @@ class _MoviesScreenState extends State<MoviesScreen> {
         ),
         TextButton(
           onPressed: () {},
-          child: Text(
+          child: const Text(
             'See all',
-            style: TextStyle(color: Colors.teal[300]),
+            style: TextStyle(color: Colors.orange),
           ),
         ),
       ],
@@ -253,7 +285,7 @@ class _MoviesScreenState extends State<MoviesScreen> {
             ? loadingProgress.cumulativeBytesLoaded /
                 loadingProgress.expectedTotalBytes!
             : null,
-        color: Colors.teal[300],
+        color: Colors.orange,
       ),
     );
   }
@@ -275,47 +307,6 @@ class _MoviesScreenState extends State<MoviesScreen> {
           ),
         ),
       ],
-    );
-  }
-
-  Widget _buildBottomNavigationBar() {
-    return Container(
-      decoration: BoxDecoration(
-        border: Border(
-          top: BorderSide(
-            color: Colors.grey[900]!,
-            width: 0.5,
-          ),
-        ),
-      ),
-      child: BottomNavigationBar(
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
-        backgroundColor: Colors.black,
-        type: BottomNavigationBarType.fixed,
-        selectedItemColor: Colors.teal[300],
-        unselectedItemColor: Colors.grey[600],
-        showSelectedLabels: false,
-        showUnselectedLabels: false,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home_rounded),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.explore_rounded),
-            label: 'Discover',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.favorite_border_rounded),
-            label: 'Favorites',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person_outline_rounded),
-            label: 'Profile',
-          ),
-        ],
-      ),
     );
   }
 }

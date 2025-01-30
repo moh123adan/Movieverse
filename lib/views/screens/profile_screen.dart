@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../controllers/auth_controller.dart';
 import '../../controllers/profile_controller.dart';
+import './movies_screen.dart';
+import './discover_screen.dart';
+import './favorite_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
   ProfileScreen({super.key});
@@ -118,31 +121,47 @@ class ProfileScreen extends StatelessWidget {
         );
       }),
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: 3,
+        currentIndex: 3, // Set to 3 for Profile tab
         backgroundColor: Colors.black,
         type: BottomNavigationBarType.fixed,
         selectedItemColor: Colors.orange,
         unselectedItemColor: Colors.grey,
         items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.play_circle), label: 'Play'),
           BottomNavigationBarItem(
-              icon: Icon(Icons.bookmark), label: 'Watchlist'),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
+            icon: Icon(Icons.home_outlined),
+            activeIcon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.search),
+            activeIcon: Icon(Icons.search),
+            label: 'Discover',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.favorite_border),
+            activeIcon: Icon(Icons.favorite),
+            label: 'Favorites',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person_outline),
+            activeIcon: Icon(Icons.person),
+            label: 'Profile',
+          ),
         ],
         onTap: (index) {
-          if (index != 3) {
-            switch (index) {
-              case 0:
-                Get.offAllNamed('/home');
-                break;
-              case 1:
-                Get.toNamed('/play');
-                break;
-              case 2:
-                Get.toNamed('/watchlist');
-                break;
-            }
+          switch (index) {
+            case 0:
+              Get.offAll(() => const MoviesScreen());
+              break;
+            case 1:
+              Get.offAll(() => const DiscoverScreen());
+              break;
+            case 2:
+              Get.offAll(() => const FavoriteScreen());
+              break;
+            case 3:
+              // Already on Profile screen
+              break;
           }
         },
       ),

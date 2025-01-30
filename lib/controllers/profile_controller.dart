@@ -66,12 +66,15 @@ class ProfileController extends GetxController {
   }
 
   Future<void> updateProfile(
-      {required String username, required String bio}) async {
+      {required String name,
+      required String username,
+      required String bio}) async {
     try {
       final user = _authController.firebaseUser.value;
       if (user == null) return;
 
       await _firestore.collection('users').doc(user.uid).update({
+        'name': name,
         'username': username, // Remove .value as parameter is already a String
         'bio': bio, // Remove .value as parameter is already a String
         'gender': gender.value, // Keep .value for RxString

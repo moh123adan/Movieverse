@@ -35,7 +35,7 @@ class ProfileScreen extends StatelessWidget {
         }
 
         // Update text controllers with user data
-        _nameController.text = user.email ?? '';
+        _nameController.text = user.name ?? '';
         _usernameController.text = user.username ?? '';
         _bioController.text = user.bio ?? '';
 
@@ -96,6 +96,7 @@ class ProfileScreen extends StatelessWidget {
               ElevatedButton(
                 onPressed: () {
                   profileController.updateProfile(
+                    name: _nameController.text,
                     username: _usernameController.text,
                     bio: _bioController.text,
                   );
@@ -131,7 +132,6 @@ class ProfileScreen extends StatelessWidget {
         ],
         onTap: (index) {
           if (index != 3) {
-            // Handle navigation to other screens
             switch (index) {
               case 0:
                 Get.offAllNamed('/home');

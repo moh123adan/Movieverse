@@ -32,9 +32,12 @@ class ProfileScreen extends StatelessWidget {
         ],
       ),
       body: Obx(() {
+        if (profileController.isLoading.value) {
+          return const Center(child: CircularProgressIndicator());
+        }
         final user = authController.userModel.value;
         if (user == null) {
-          return const Center(child: CircularProgressIndicator());
+          return const Center(child: Text('User data not available'));
         }
 
         // Update text controllers with user data
@@ -120,51 +123,7 @@ class ProfileScreen extends StatelessWidget {
           ),
         );
       }),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: 3, // Set to 3 for Profile tab
-        backgroundColor: Colors.black,
-        type: BottomNavigationBarType.fixed,
-        selectedItemColor: Colors.orange,
-        unselectedItemColor: Colors.grey,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home_outlined),
-            activeIcon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            activeIcon: Icon(Icons.search),
-            label: 'Discover',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.favorite_border),
-            activeIcon: Icon(Icons.favorite),
-            label: 'Favorites',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person_outline),
-            activeIcon: Icon(Icons.person),
-            label: 'Profile',
-          ),
-        ],
-        onTap: (index) {
-          switch (index) {
-            case 0:
-              Get.offAll(() => const MoviesScreen());
-              break;
-            case 1:
-              Get.offAll(() => const DiscoverScreen());
-              break;
-            case 2:
-              Get.offAll(() => const FavoriteScreen());
-              break;
-            case 3:
-              // Already on Profile screen
-              break;
-          }
-        },
-      ),
+      bottomNavigationBar: _buildBottomNavigationBar(),
     );
   }
 
@@ -222,6 +181,54 @@ class ProfileScreen extends StatelessWidget {
             ),
           ],
         );
+      },
+    );
+  }
+
+  Widget _buildBottomNavigationBar() {
+    return BottomNavigationBar(
+      currentIndex: 3, // Set to 3 for Profile tab
+      backgroundColor: Colors.black,
+      type: BottomNavigationBarType.fixed,
+      selectedItemColor: Colors.orange,
+      unselectedItemColor: Colors.grey,
+      items: const [
+        BottomNavigationBarItem(
+          icon: Icon(Icons.home_outlined),
+          activeIcon: Icon(Icons.home),
+          label: 'Home',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.search),
+          activeIcon: Icon(Icons.search),
+          label: 'Discover',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.favorite_border),
+          activeIcon: Icon(Icons.favorite),
+          label: 'Favorites',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.person_outline),
+          activeIcon: Icon(Icons.person),
+          label: 'Profile',
+        ),
+      ],
+      onTap: (index) {
+        switch (index) {
+          case 0:
+            Get.offAll(() => const MoviesScreen());
+            break;
+          case 1:
+            Get.offAll(() => const DiscoverScreen());
+            break;
+          case 2:
+            Get.offAll(() => const FavoriteScreen());
+            break;
+          case 3:
+            // Already on Profile screen
+            break;
+        }
       },
     );
   }

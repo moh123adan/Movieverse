@@ -15,6 +15,7 @@ class ProfileController extends GetxController {
   RxString name = ''.obs;
   RxString username = ''.obs;
   RxString bio = ''.obs;
+  RxBool isLoading = true.obs;
 
   @override
   void onInit() {
@@ -22,12 +23,27 @@ class ProfileController extends GetxController {
     _initUserData();
   }
 
-  void _initUserData() {
-    final user = _authController.userModel.value;
-    if (user != null) {
-      username.value = user.username!;
-      bio.value = user.bio!;
-      gender.value = user.gender!;
+  Future<void> _initUserData() async {
+    isLoading.value = true;
+    try {
+      final isDataLoaded = await _authController.ensureUserDataLoaded();
+      if (isDataLoaded) {
+        final user = _authController.userModel.value;
+        if (user != null) {
+          username.value = user.username ?? '';
+          bio.value = user.bio ?? '';
+          gender.value = user.gender ?? '';
+          name.value = user.name ?? '';
+        } else {
+          throw Exception('User model is null');
+        }
+      } else {
+        throw Exception('Failed to load user data');
+      }
+    } catch (e) {
+      Get.snackbar('Error', 'Failed to load user data. Please try again.');
+    } finally {
+      isLoading.value = false;
     }
   }
 
@@ -65,22 +81,24 @@ class ProfileController extends GetxController {
     }
   }
 
-  Future<void> updateProfile(
-      {required String name,
-      required String username,
-      required String bio}) async {
+  Future<void> updateProfile({
+    required String name,
+    required String username,
+    required String bio,
+  }) async {
     try {
       final user = _authController.firebaseUser.value;
       if (user == null) return;
 
       await _firestore.collection('users').doc(user.uid).update({
         'name': name,
-        'username': username, // Remove .value as parameter is already a String
-        'bio': bio, // Remove .value as parameter is already a String
-        'gender': gender.value, // Keep .value for RxString
+        'username': username,
+        'bio': bio,
+        'gender': gender.value,
       });
 
       // Update local Rx variables
+      this.name.value = name;
       this.username.value = username;
       this.bio.value = bio;
 

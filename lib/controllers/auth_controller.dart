@@ -20,13 +20,22 @@ class AuthController extends GetxController {
     ever(firebaseUser, _setInitialScreen);
   }
 
-  void _setInitialScreen(User? user) {
+  void _setInitialScreen(User? user) async {
     if (user != null) {
       isLoggedIn.value = true;
       _storage.write('isLoggedIn', true);
-      loadUserData(user.uid);
+      await loadUserData(user.uid);
       Get.offAllNamed('/movies');
+    } else {
+      Get.offAllNamed('/login');
     }
+  }
+
+  Future<bool> ensureUserDataLoaded() async {
+    if (firebaseUser.value != null && userModel.value == null) {
+      await loadUserData(firebaseUser.value!.uid);
+    }
+    return userModel.value != null;
   }
 
   Future<void> loadUserData(String uid) async {
@@ -35,10 +44,11 @@ class AuthController extends GetxController {
       if (doc.exists) {
         userModel.value = UserModel.fromJson(doc.data()!);
       } else {
-        Get.snackbar('Error', 'User data not found.');
+        throw Exception('User data not found.');
       }
     } catch (e) {
       Get.snackbar('Error', 'Failed to load user data. Please try again.');
+      rethrow;
     }
   }
 
@@ -99,6 +109,9 @@ class AuthController extends GetxController {
     try {
       await _auth.signOut();
       firebaseUser.value = null;
+      userModel.value = null;
+      isLoggedIn.value = false;
+      _storage.remove('isLoggedIn');
       Get.offAllNamed('/login');
     } catch (e) {
       Get.snackbar('Error', e.toString());
@@ -119,3 +132,4 @@ class AuthController extends GetxController {
     }
   }
 }
+

@@ -26,10 +26,6 @@ class AuthController extends GetxController {
       _storage.write('isLoggedIn', true);
       loadUserData(user.uid);
       Get.offAllNamed('/movies');
-    } else {
-      isLoggedIn.value = false;
-      _storage.write('isLoggedIn', false);
-      Get.offAllNamed('/login');
     }
   }
 
@@ -103,6 +99,7 @@ class AuthController extends GetxController {
     try {
       await _auth.signOut();
       firebaseUser.value = null;
+      Get.offAllNamed('/login');
     } catch (e) {
       Get.snackbar('Error', e.toString());
     }

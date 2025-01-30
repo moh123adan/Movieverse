@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'controllers/auth_controller.dart';
 import 'firebase_options.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
@@ -26,9 +25,6 @@ Future<void> main() async {
 
   // Load environment variables
   await dotenv.load(fileName: ".env");
-
-  // Initialize GetX controllers
-  Get.lazyPut(() => AuthController());
 
   // Check if a user is logged in
   User? user = FirebaseAuth.instance.currentUser;

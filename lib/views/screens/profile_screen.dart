@@ -35,7 +35,7 @@ class ProfileScreen extends StatelessWidget {
         }
 
         // Update text controllers with user data
-        _nameController.text = user.name ?? '';
+        _nameController.text = user.email ?? '';
         _usernameController.text = user.username ?? '';
         _bioController.text = user.bio ?? '';
 
@@ -70,9 +70,9 @@ class ProfileScreen extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 32),
-              _buildTextField('Name', _nameController),
+              _buildTextField('Username', _nameController),
               const SizedBox(height: 16),
-              _buildTextField('Username', _usernameController),
+              _buildTextField('Email', _usernameController),
               const SizedBox(height: 16),
               _buildTextField('Bio', _bioController),
               const SizedBox(height: 24),

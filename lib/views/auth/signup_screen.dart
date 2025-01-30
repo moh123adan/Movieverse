@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:movieverse/views/auth/login_screen.dart';
 import '../../controllers/auth_controller.dart';
 
 class SignupScreen extends StatelessWidget {
@@ -163,7 +164,7 @@ class SignupScreen extends StatelessWidget {
               ),
               const SizedBox(height: 16),
               TextButton(
-                onPressed: () => Get.back(),
+                onPressed: () => Get.off(() => LoginScreen()),
                 child: const Text(
                   'Already have an account? Sign In',
                   style: TextStyle(color: Colors.orange),

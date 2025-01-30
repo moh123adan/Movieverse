@@ -54,6 +54,8 @@ class SignupScreen extends StatelessWidget {
         .then((_) {
       // Close loading indicator
       Get.back();
+      // Navigate to MoviesScreen
+      Get.offAllNamed('/');
     }).catchError((error) {
       // Close loading indicator
       Get.back();

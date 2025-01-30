@@ -7,7 +7,7 @@ import '../models/user.dart';
 class AuthController extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  final _storage = GetStorage();
+  final GetStorage _storage = GetStorage();
 
   Rx<User?> firebaseUser = Rx<User?>(null);
   Rx<UserModel?> userModel = Rx<UserModel?>(null);
@@ -18,26 +18,18 @@ class AuthController extends GetxController {
     super.onInit();
     firebaseUser.bindStream(_auth.authStateChanges());
     ever(firebaseUser, _setInitialScreen);
-
-    // Check local storage for login state
-    isLoggedIn.value = _storage.read('isLoggedIn') ?? false;
   }
 
-  void _setInitialScreen(User? user) async {
-    if (user == null) {
+  void _setInitialScreen(User? user) {
+    if (user != null) {
+      isLoggedIn.value = true;
+      _storage.write('isLoggedIn', true);
+      loadUserData(user.uid);
+      Get.offAllNamed('/movies');
+    } else {
       isLoggedIn.value = false;
       _storage.write('isLoggedIn', false);
       Get.offAllNamed('/login');
-    } else {
-      try {
-        await loadUserData(user.uid);
-        isLoggedIn.value = true;
-        _storage.write('isLoggedIn', true);
-        Get.offAllNamed('/');
-      } catch (e) {
-        Get.snackbar('Error', 'Failed to load user data. Please try again.');
-        Get.offAllNamed('/login');
-      }
     }
   }
 
@@ -60,7 +52,7 @@ class AuthController extends GetxController {
     required String username,
   }) async {
     if (username.isEmpty) {
-      Get.snackbar('Error', 'username cannot be empty.');
+      Get.snackbar('Error', 'Username cannot be empty.');
       return;
     }
 
@@ -84,15 +76,9 @@ class AuthController extends GetxController {
           .doc(cred.user!.uid)
           .set(user.toJson());
 
-      // The navigation and login state will be handled by _setInitialScreen
+      firebaseUser.value = cred.user;
     } on FirebaseAuthException catch (e) {
-      String errorMessage = 'An error occurred. Please try again.';
-      if (e.code == 'weak-password') {
-        errorMessage = 'The password provided is too weak.';
-      } else if (e.code == 'email-already-in-use') {
-        errorMessage = 'The account already exists for that email.';
-      }
-      Get.snackbar('Error', errorMessage);
+      Get.snackbar('Error', _getFirebaseErrorMessage(e));
     } catch (e) {
       Get.snackbar('Error', e.toString());
     }
@@ -103,14 +89,11 @@ class AuthController extends GetxController {
     required String password,
   }) async {
     try {
-      await _auth.signInWithEmailAndPassword(email: email, password: password);
-      // Login state and navigation are handled in _setInitialScreen
+      final UserCredential cred = await _auth.signInWithEmailAndPassword(
+          email: email, password: password);
+      firebaseUser.value = cred.user;
     } on FirebaseAuthException catch (e) {
-      String errorMessage = 'An error occurred. Please try again.';
-      if (e.code == 'user-not-found' || e.code == 'wrong-password') {
-        errorMessage = 'Invalid email or password.';
-      }
-      Get.snackbar('Error', errorMessage);
+      Get.snackbar('Error', _getFirebaseErrorMessage(e));
     } catch (e) {
       Get.snackbar('Error', e.toString());
     }
@@ -119,12 +102,23 @@ class AuthController extends GetxController {
   Future<void> signOut() async {
     try {
       await _auth.signOut();
-      userModel.value = null;
-      isLoggedIn.value = false;
-      _storage.write('isLoggedIn', false);
-      Get.offAllNamed('/login');
+      firebaseUser.value = null;
     } catch (e) {
       Get.snackbar('Error', e.toString());
+    }
+  }
+
+  String _getFirebaseErrorMessage(FirebaseAuthException e) {
+    switch (e.code) {
+      case 'weak-password':
+        return 'The password provided is too weak.';
+      case 'email-already-in-use':
+        return 'The account already exists for that email.';
+      case 'user-not-found':
+      case 'wrong-password':
+        return 'Invalid email or password.';
+      default:
+        return 'An error occurred. Please try again.';
     }
   }
 }

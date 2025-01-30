@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../controllers/auth_controller.dart';
 import '../../models/movie.dart';
 import '../../services/movie_service.dart';
 
@@ -22,6 +23,7 @@ class _MoviesScreenState extends State<MoviesScreen> {
   void initState() {
     super.initState();
     _loadMovies();
+    Get.lazyPut(() => AuthController());
   }
 
   Future<void> _loadMovies() async {
